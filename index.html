@@ -1,0 +1,2742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足球人生数字平台 | 球星数据博物馆 + 青训展示平台 + 足球社区</title>
+    <meta name="description" content="连接职业足球与青少年足球的数字化平台：免费查看梅西C罗等球星生涯数据，同时展示和推广青少年球员的比赛视频，提供足球社区交流，让孩子的足球梦想被看见！">
+    <meta name="keywords" content="足球生涯博物馆,青少年足球,青训展示,足球视频上传,球员数据,足球社区,足球论坛,足球梦想">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <style>
+        :root {
+            --primary-dark: #0A2647;
+            --primary-green: #00FF85;
+            --primary-blue: #0066CC;
+            --primary-orange: #FF6B35;
+            --primary-white: #F5F5F5;
+            --secondary-gray: #E0E0E0;
+            --accent-gold: #FFD700;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--primary-green);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-green);
+            background: rgba(0, 255, 133, 0.1);
+        }
+        
+        .nav-link.active {
+            color: white;
+            background: var(--primary-green);
+        }
+        
+        .nav-link.active:hover {
+            background: #00e676;
+        }
+        
+        .badge-new {
+            position: absolute;
+            top: -8px;
+            right: -5px;
+            background: var(--primary-orange);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, var(--primary-orange), #FF8C42);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* 英雄区域 */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1a3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 40px;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .hero-btn {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+        
+        .hero-btn.primary {
+            background: var(--primary-green);
+            color: var(--primary-dark);
+        }
+        
+        .hero-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .hero-btn.primary:hover {
+            background: #00e676;
+        }
+        
+        .hero-btn.secondary:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* 内容区域 */
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary-green);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        /* 平台特色卡片 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 5px solid var(--primary-green);
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .feature-card:nth-child(2) {
+            border-top-color: var(--primary-blue);
+        }
+        
+        .feature-card:nth-child(3) {
+            border-top-color: var(--primary-orange);
+        }
+        
+        .feature-card:nth-child(4) {
+            border-top-color: var(--accent-gold);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--primary-green);
+        }
+        
+        .feature-card:nth-child(2) .feature-icon {
+            color: var(--primary-blue);
+        }
+        
+        .feature-card:nth-child(3) .feature-icon {
+            color: var(--primary-orange);
+        }
+        
+        .feature-card:nth-child(4) .feature-icon {
+            color: var(--accent-gold);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        /* 青少年展示平台 */
+        .youth-platform {
+            background: linear-gradient(135deg, #f8f9ff 0%, #eef4ff 100%);
+            padding: 60px 0;
+            border-radius: 30px;
+            margin: 60px 0;
+        }
+        
+        .youth-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .youth-stat {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .youth-stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 5px;
+        }
+        
+        .youth-stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .pricing-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .plan-card.popular {
+            border: 3px solid var(--primary-orange);
+            transform: scale(1.05);
+        }
+        
+        .plan-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .plan-header {
+            background: var(--primary-dark);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .plan-header.popular {
+            background: var(--primary-orange);
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .plan-period {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .plan-features {
+            padding: 25px;
+        }
+        
+        .plan-feature {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--secondary-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .plan-feature i {
+            color: var(--primary-green);
+        }
+        
+        .plan-button {
+            padding: 15px;
+            text-align: center;
+            background: rgba(0, 255, 133, 0.1);
+        }
+        
+        .plan-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-green);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .plan-btn:hover {
+            background: #00e676;
+        }
+        
+        .plan-card.popular .plan-btn {
+            background: var(--primary-orange);
+            color: white;
+        }
+        
+        .plan-card.popular .plan-btn:hover {
+            background: #FF8C42;
+        }
+        
+        /* 足球社区/论坛样式 */
+        .forum-section {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+            padding: 60px 0;
+            border-radius: 30px;
+            margin: 60px 0;
+        }
+        
+        .forum-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .forum-category {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary-blue);
+        }
+        
+        .forum-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .forum-category:nth-child(2) {
+            border-left-color: var(--primary-orange);
+        }
+        
+        .forum-category:nth-child(3) {
+            border-left-color: var(--primary-green);
+        }
+        
+        .forum-category:nth-child(4) {
+            border-left-color: var(--accent-gold);
+        }
+        
+        .forum-category h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .forum-category h3 i {
+            color: var(--primary-blue);
+        }
+        
+        .forum-category:nth-child(2) h3 i {
+            color: var(--primary-orange);
+        }
+        
+        .forum-category:nth-child(3) h3 i {
+            color: var(--primary-green);
+        }
+        
+        .forum-category:nth-child(4) h3 i {
+            color: var(--accent-gold);
+        }
+        
+        .forum-category p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .forum-topics {
+            list-style: none;
+        }
+        
+        .forum-topic {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--secondary-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .forum-topic:last-child {
+            border-bottom: none;
+        }
+        
+        .topic-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .topic-title:hover {
+            color: var(--primary-blue);
+        }
+        
+        .topic-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* 常见问题样式 */
+        .faq-section {
+            margin: 60px 0;
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .faq-question:hover {
+            background: rgba(0, 255, 133, 0.05);
+        }
+        
+        .faq-question i {
+            transition: var(--transition);
+        }
+        
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .faq-answer.active {
+            padding: 0 25px 25px;
+            max-height: 500px;
+        }
+        
+        /* 专家咨询区域 */
+        .expert-section {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f0ff 100%);
+            padding: 60px 0;
+            border-radius: 30px;
+            margin: 60px 0;
+        }
+        
+        .expert-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .expert-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary-orange), #FF8C42);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .expert-badge {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .consultation-plans {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .consultation-plan {
+            background: rgba(0, 255, 133, 0.1);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .consultation-plan:hover {
+            border-color: var(--primary-green);
+            transform: translateY(-5px);
+        }
+        
+        .consultation-plan.popular {
+            background: rgba(255, 107, 53, 0.1);
+            border-color: var(--primary-orange);
+        }
+        
+        .consultation-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin: 15px 0;
+        }
+        
+        /* 视频图库样式 */
+        .gallery-section {
+            padding: 60px 0;
+        }
+        
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .video-item {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-thumbnail i {
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .video-duration {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .video-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .video-tag {
+            background: rgba(0, 255, 133, 0.1);
+            color: var(--primary-dark);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        /* 分享按钮样式 */
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border: 1px solid var(--secondary-gray);
+            border-radius: 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        
+        .share-btn.wechat {
+            color: #09bb07;
+        }
+        
+        .share-btn.weibo {
+            color: #e6162d;
+        }
+        
+        .share-btn.douyin {
+            color: #000;
+        }
+        
+        .share-btn.xiaohongshu {
+            color: #ff2442;
+        }
+        
+        .share-btn.bilibili {
+            color: #fb7299;
+        }
+        
+        .share-btn.kuaishou {
+            color: #ff5000;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-green);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-icon:hover {
+            background: var(--primary-green);
+            color: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .features, .pricing-plans, .forum-categories, .video-gallery, .consultation-plans {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card.popular {
+                transform: none;
+            }
+            
+            .plan-card.popular:hover {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* 动画 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 模态框样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--secondary-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--secondary-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--secondary-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--secondary-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--secondary-gray);
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background: var(--primary-green);
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary:hover {
+            background: #00e676;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary-gray);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .btn-orange {
+            background: var(--primary-orange);
+            color: white;
+        }
+        
+        .btn-orange:hover {
+            background: #FF8C42;
+        }
+        
+        /* 支付二维码样式 */
+        .qr-codes {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .qr-container {
+            text-align: center;
+        }
+        
+        .qr-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--secondary-gray);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .qr-image img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .qr-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        
+        .qr-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-top: 10px;
+        }
+        
+        /* 原有的数据可视化样式 */
+        .dashboard-panel {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .player-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            background: rgba(0, 255, 133, 0.1);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-orange);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .player-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .player-option {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--secondary-gray);
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .player-option:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+        }
+        
+        .player-option.active {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+        }
+        
+        @media (max-width: 768px) {
+            .player-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <nav class="top-nav">
+            <div class="container nav-container">
+                <div class="logo" @click="switchSection('home')">
+                    <i class="fas fa-futbol"></i>
+                    <div>足球人生<span>数字平台</span></div>
+                </div>
+                
+                <div class="nav-links">
+                    <div class="nav-link" :class="{active: activeSection === 'home'}" @click="switchSection('home')">
+                        首页
+                    </div>
+                    <div class="nav-link" :class="{active: activeSection === 'museum'}" @click="switchSection('museum')">
+                        球星博物馆
+                    </div>
+                    <div class="nav-link" :class="{active: activeSection === 'youth'}" @click="switchSection('youth')">
+                        青训展示平台
+                        <span class="badge-new">新</span>
+                    </div>
+                    <div class="nav-link" :class="{active: activeSection === 'gallery'}" @click="switchSection('gallery')">
+                        视频图库
+                    </div>
+                    <div class="nav-link" :class="{active: activeSection === 'community'}" @click="switchSection('community')">
+                        足球社区
+                        <span class="badge-new">新</span>
+                    </div>
+                    <div class="nav-link" :class="{active: activeSection === 'about'}" @click="switchSection('about')">
+                        关于我们
+                    </div>
+                    
+                    <button class="upload-btn" @click="startUploadProcess()">
+                        <i class="fas fa-upload"></i>
+                        上传视频
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 首页 -->
+        <section v-if="activeSection === 'home'" id="home-section">
+            <!-- 英雄区域 -->
+            <div class="hero-section">
+                <div class="container">
+                    <h1 class="hero-title">
+                        连接足球梦想<br>
+                        <span style="color: var(--primary-green)">从青训到职业</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        一站式足球数字平台：免费查看顶级球星生涯数据，同时为青少年球员提供展示舞台。
+                        让孩子踢球的精彩瞬间被教练、球探和全世界看见！
+                    </p>
+                    
+                    <div class="hero-buttons">
+                        <button class="hero-btn primary" @click="switchSection('museum')">
+                            <i class="fas fa-chart-line"></i>
+                            探索球星数据
+                        </button>
+                        <button class="hero-btn secondary" @click="switchSection('youth')">
+                            <i class="fas fa-users"></i>
+                            了解青训展示
+                        </button>
+                        <button class="hero-btn secondary" @click="switchSection('community')">
+                            <i class="fas fa-comments"></i>
+                            加入足球社区
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 平台特色 -->
+            <div class="container">
+                <h2 class="section-title">平台四大核心功能</h2>
+                <p class="section-subtitle">我们致力于打造连接职业足球与青少年足球的完整生态</p>
+                
+                <div class="features">
+                    <div class="feature-card" @click="switchSection('museum')">
+                        <div class="feature-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h3 class="feature-title">球星数字博物馆</h3>
+                        <p>梅西、C罗等顶级球星的完整生涯数据分析，技术能力雷达图、荣誉墙、时间轴可视化展示，学习职业球员的成长路径。</p>
+                    </div>
+                    
+                    <div class="feature-card" @click="switchSection('youth')">
+                        <div class="feature-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <h3 class="feature-title">青训展示平台</h3>
+                        <p>家长可上传孩子比赛视频，付费获得专业推广。让孩子的足球才华被更多教练、球探和俱乐部发现，助力足球梦想。</p>
+                    </div>
+                    
+                    <div class="feature-card" @click="switchSection('community')">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="feature-title">足球社区交流</h3>
+                        <p>家长、教练、球探和足球爱好者交流平台，分享青训经验、比赛信息、球员成长故事，连接足球人脉网络。</p>
+                    </div>
+                    
+                    <div class="feature-card" @click="switchSection('gallery')">
+                        <div class="feature-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="feature-title">智能视频库</h3>
+                        <p>免费观看高清比赛集锦、技巧教学、经典瞬间。使用合法授权内容，避免侵权风险，打造安全的内容生态。</p>
+                    </div>
+                </div>
+                
+                <!-- 分享功能 -->
+                <div class="dashboard-panel" style="margin-top: 40px;">
+                    <h3><i class="fas fa-share-alt"></i> 分享平台</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">把足球人生数字平台分享给更多朋友</p>
+                    
+                    <div class="share-buttons">
+                        <button class="share-btn wechat" @click="shareToWechat">
+                            <i class="fab fa-weixin"></i> 微信
+                        </button>
+                        <button class="share-btn weibo" @click="shareToWeibo">
+                            <i class="fab fa-weibo"></i> 微博
+                        </button>
+                        <button class="share-btn xiaohongshu" @click="shareToXiaohongshu">
+                            <i class="fas fa-book"></i> 小红书
+                        </button>
+                        <button class="share-btn douyin" @click="shareToDouyin">
+                            <i class="fab fa-tiktok"></i> 抖音
+                        </button>
+                        <button class="share-btn" @click="shareToVideoAccount">
+                            <i class="fas fa-video"></i> 视频号
+                        </button>
+                        <button class="share-btn bilibili" @click="shareToBilibili">
+                            <i class="fab fa-bilibili"></i> B站
+                        </button>
+                        <button class="share-btn kuaishou" @click="shareToKuaishou">
+                            <i class="fas fa-play-circle"></i> 快手
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 青少年平台介绍 -->
+            <div class="youth-platform">
+                <div class="container">
+                    <h2 class="section-title">青少年足球展示平台</h2>
+                    <p class="section-subtitle">让孩子踢球的精彩时刻被世界看见，连接未来的足球之星</p>
+                    
+                    <div class="youth-stats">
+                        <div class="youth-stat">
+                            <div class="youth-stat-value">1,250+</div>
+                            <div class="youth-stat-label">注册小球员</div>
+                        </div>
+                        <div class="youth-stat">
+                            <div class="youth-stat-value">3,400+</div>
+                            <div class="youth-stat-label">上传视频</div>
+                        </div>
+                        <div class="youth-stat">
+                            <div class="youth-stat-value">58</div>
+                            <div class="youth-stat-label">职业球探关注</div>
+                        </div>
+                        <div class="youth-stat">
+                            <div class="youth-stat-value">12</div>
+                            <div class="youth-stat-label">成功签约案例</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="section-title" style="font-size: 1.8rem; margin-top: 50px;">推广服务套餐</h3>
+                    <p class="section-subtitle">选择适合的套餐，最大化孩子的曝光机会</p>
+                    
+                    <div class="pricing-plans">
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <div class="plan-name">基础展示</div>
+                                <div class="plan-price">¥28</div>
+                                <div class="plan-period">/月</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>视频展示30天</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>基础球员档案</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>平台内展示</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-times"></i>
+                                    <span>首页推荐</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>一对一足球知识交流</span>
+                                </div>
+                            </div>
+                            <div class="plan-button">
+                                <button class="plan-btn" @click="selectPlan('基础展示')">选择此套餐</button>
+                            </div>
+                        </div>
+                        
+                        <div class="plan-card popular">
+                            <div class="plan-header popular">
+                                <div class="plan-name">黄金推广</div>
+                                <div class="plan-price">¥58</div>
+                                <div class="plan-period">/月</div>
+                                <div style="font-size: 0.9rem; margin-top: 5px;">最受欢迎</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>视频展示90天</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>完整球员档案</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>平台内展示</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>平台首页推荐</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>一对一足球知识交流</span>
+                                </div>
+                            </div>
+                            <div class="plan-button">
+                                <button class="plan-btn" @click="selectPlan('黄金推广')">选择此套餐</button>
+                            </div>
+                        </div>
+                        
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <div class="plan-name">精英计划</div>
+                                <div class="plan-price">定制</div>
+                                <div class="plan-period">个性化服务</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>全年视频展示</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>专业数据追踪</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>首页置顶推荐</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>一对一足球知识交流</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="fas fa-check"></i>
+                                    <span>专业成长指导</span>
+                                </div>
+                            </div>
+                            <div class="plan-button">
+                                <button class="plan-btn" @click="selectPlan('精英计划')">联系定制</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 球星博物馆 -->
+        <section v-if="activeSection === 'museum'" id="museum-section" class="container">
+            <h2 class="section-title">足球生涯数字博物馆</h2>
+            <p class="section-subtitle">探索顶级球星的职业生涯数据，可视化分析技术能力</p>
+            
+            <!-- 简化的球员选择器 -->
+            <div class="player-selector">
+                <button v-for="player in players" 
+                        :key="player" 
+                        class="player-option" 
+                        :class="{active: currentPlayer === player}"
+                        @click="currentPlayer = player">
+                    {{player}}
+                </button>
+            </div>
+            
+            <!-- 统计摘要 -->
+            <div class="player-stats">
+                <div class="stat-box">
+                    <div class="stat-value">{{playerData[currentPlayer]?.stats.matches || 0}}</div>
+                    <div class="stat-label">总比赛场次</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">{{playerData[currentPlayer]?.stats.goals || 0}}</div>
+                    <div class="stat-label">总进球数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">{{playerData[currentPlayer]?.stats.assists || 0}}</div>
+                    <div class="stat-label">总助攻数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">{{playerData[currentPlayer]?.stats.trophies || 0}}</div>
+                    <div class="stat-label">荣誉奖杯</div>
+                </div>
+            </div>
+            
+            <!-- 简化的数据展示 -->
+            <div class="dashboard-panel">
+                <h3><i class="fas fa-trophy"></i> 荣誉奖杯墙</h3>
+                <div class="trophy-wall" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div v-for="(trophy, index) in playerData[currentPlayer]?.trophies.slice(0, 6)" :key="index" class="trophy-item">
+                        <div style="width: 60px; height: 60px; background: var(--accent-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                            <i :class="trophy.icon" style="color: var(--primary-dark); font-size: 1.5rem;"></i>
+                        </div>
+                        <div style="font-size: 0.9rem; font-weight: 600;">{{trophy.name}}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">{{trophy.year}}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分享功能 -->
+            <div class="dashboard-panel" style="margin-top: 30px;">
+                <h3><i class="fas fa-share-alt"></i> 分享此页面</h3>
+                <div class="share-buttons">
+                    <button class="share-btn wechat" @click="shareToWechat">
+                        <i class="fab fa-weixin"></i> 微信
+                    </button>
+                    <button class="share-btn weibo" @click="shareToWeibo">
+                        <i class="fab fa-weibo"></i> 微博
+                    </button>
+                    <button class="share-btn xiaohongshu" @click="shareToXiaohongshu">
+                        <i class="fas fa-book"></i> 小红书
+                    </button>
+                    <button class="share-btn douyin" @click="shareToDouyin">
+                        <i class="fab fa-tiktok"></i> 抖音
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 青少年展示平台详细页面 -->
+        <section v-if="activeSection === 'youth'" id="youth-section" class="container">
+            <h2 class="section-title">青训展示平台</h2>
+            <p class="section-subtitle">展示青少年球员才华，连接球探与未来之星</p>
+            
+            <div class="dashboard-panel">
+                <h3><i class="fas fa-play-circle"></i> 最新上传视频</h3>
+                <div class="video-gallery">
+                    <div v-for="video in youthVideos" :key="video.id" class="video-item" @click="playVideo(video)">
+                        <div class="video-thumbnail">
+                            <i class="fas fa-play-circle"></i>
+                            <div class="video-duration">
+                                {{video.duration}}
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">{{video.title}}</div>
+                            <div class="video-meta">
+                                <span>{{video.playerName}}</span>
+                                <span>{{video.age}}岁</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                                上传时间: {{video.uploadDate}}
+                            </div>
+                            <div class="video-tags">
+                                <span v-for="tag in video.tags" :key="tag" class="video-tag">
+                                    {{tag}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分享功能 -->
+                <div style="margin: 30px 0;">
+                    <h4 style="margin-bottom: 15px;">分享青训平台</h4>
+                    <div class="share-buttons">
+                        <button class="share-btn wechat" @click="shareToWechat">
+                            <i class="fab fa-weixin"></i> 微信
+                        </button>
+                        <button class="share-btn weibo" @click="shareToWeibo">
+                            <i class="fab fa-weibo"></i> 微博
+                        </button>
+                        <button class="share-btn douyin" @click="shareToDouyin">
+                            <i class="fab fa-tiktok"></i> 抖音
+                        </button>
+                        <button class="share-btn" @click="shareToVideoAccount">
+                            <i class="fas fa-video"></i> 视频号
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button @click="startUploadProcess()" class="upload-btn" style="display: inline-flex;">
+                        <i class="fas fa-upload"></i>
+                        上传孩子的比赛视频
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dashboard-panel">
+                <h3><i class="fas fa-question-circle"></i> 常见问题</h3>
+                <div style="margin-top: 20px;">
+                    <div v-for="(faq, index) in youthFaqs" :key="index" class="faq-item">
+                        <div class="faq-question" @click="toggleFaq(index)">
+                            {{faq.question}}
+                            <i :class="faq.open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+                        </div>
+                        <div class="faq-answer" :class="{active: faq.open}">
+                            {{faq.answer}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 视频图库页面 -->
+        <section v-if="activeSection === 'gallery'" id="gallery-section" class="container">
+            <div class="gallery-section">
+                <h2 class="section-title">足球视频图库</h2>
+                <p class="section-subtitle">免费观看高清足球比赛集锦、技巧教学、经典瞬间</p>
+                
+                <div class="video-gallery">
+                    <div v-for="video in galleryVideos" :key="video.id" class="video-item" @click="playVideo(video)">
+                        <div class="video-thumbnail">
+                            <i class="fas fa-play-circle"></i>
+                            <div class="video-duration">
+                                {{video.duration}}
+                            </div>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">{{video.title}}</div>
+                            <div class="video-meta">
+                                <span>{{video.category}}</span>
+                                <span>{{video.views}} 次观看</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                                上传时间: {{video.uploadDate}}
+                            </div>
+                            <div class="video-tags">
+                                <span v-for="tag in video.tags" :key="tag" class="video-tag">
+                                    {{tag}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分享功能 -->
+                <div class="dashboard-panel" style="margin-top: 40px;">
+                    <h3><i class="fas fa-share-alt"></i> 分享视频图库</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">把精彩足球视频分享给朋友</p>
+                    
+                    <div class="share-buttons">
+                        <button class="share-btn wechat" @click="shareToWechat">
+                            <i class="fab fa-weixin"></i> 微信
+                        </button>
+                        <button class="share-btn weibo" @click="shareToWeibo">
+                            <i class="fab fa-weibo"></i> 微博
+                        </button>
+                        <button class="share-btn douyin" @click="shareToDouyin">
+                            <i class="fab fa-tiktok"></i> 抖音
+                        </button>
+                        <button class="share-btn bilibili" @click="shareToBilibili">
+                            <i class="fab fa-bilibili"></i> B站
+                        </button>
+                        <button class="share-btn kuaishou" @click="shareToKuaishou">
+                            <i class="fas fa-play-circle"></i> 快手
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 足球社区/论坛页面 -->
+        <section v-if="activeSection === 'community'" id="community-section">
+            <div class="forum-section">
+                <div class="container">
+                    <h2 class="section-title">足球社区</h2>
+                    <p class="section-subtitle">连接家长、教练、球探和足球爱好者的交流平台，分享经验，共同成长</p>
+                    
+                    <div class="forum-categories">
+                        <div class="forum-category">
+                            <h3><i class="fas fa-comments"></i> 青训交流区</h3>
+                            <p>青训教练、家长交流训练方法、比赛经验、球员培养心得，分享青训资源和信息。</p>
+                            <ul class="forum-topics">
+                                <li class="forum-topic">
+                                    <div class="topic-title">如何提高小球员的射门准确性？</div>
+                                    <div class="topic-stats">
+                                        <span>25 回复</span>
+                                        <span>3天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">青少年体能训练注意事项</div>
+                                    <div class="topic-stats">
+                                        <span>18 回复</span>
+                                        <span>5天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">校园足球联赛经验分享</div>
+                                    <div class="topic-stats">
+                                        <span>42 回复</span>
+                                        <span>1周前</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="forum-category">
+                            <h3><i class="fas fa-calendar-alt"></i> 赛事信息</h3>
+                            <p>各地青少年足球比赛信息、赛事报名、比赛结果分享，了解全国足球赛事动态。</p>
+                            <ul class="forum-topics">
+                                <li class="forum-topic">
+                                    <div class="topic-title">2024全国青少年足球锦标赛报名开始</div>
+                                    <div class="topic-stats">
+                                        <span>12 回复</span>
+                                        <span>2天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">北京市校园足球联赛赛程公布</div>
+                                    <div class="topic-stats">
+                                        <span>8 回复</span>
+                                        <span>4天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">青少年足球夏令营推荐</div>
+                                    <div class="topic-stats">
+                                        <span>31 回复</span>
+                                        <span>2周前</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="forum-category">
+                            <h3><i class="fas fa-user-friends"></i> 球员故事</h3>
+                            <p>分享小球员成长经历、足球梦想故事，记录从青训到职业的每一步成长足迹。</p>
+                            <ul class="forum-topics">
+                                <li class="forum-topic">
+                                    <div class="topic-title">我的孩子如何通过平台被球探发现</div>
+                                    <div class="topic-stats">
+                                        <span>56 回复</span>
+                                        <span>3天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">从校园足球到职业青训的转变</div>
+                                    <div class="topic-stats">
+                                        <span>24 回复</span>
+                                        <span>1周前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">足球改变了我孩子的人生</div>
+                                    <div class="topic-stats">
+                                        <span>89 回复</span>
+                                        <span>2周前</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="forum-category">
+                            <h3><i class="fas fa-cogs"></i> 技术讨论</h3>
+                            <p>足球技战术分析与讨论、训练方法研究、足球装备评测，提升足球专业水平。</p>
+                            <ul class="forum-topics">
+                                <li class="forum-topic">
+                                    <div class="topic-title">4-3-3阵型在现代足球中的应用</div>
+                                    <div class="topic-stats">
+                                        <span>37 回复</span>
+                                        <span>5天前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">青少年足球鞋选购指南</div>
+                                    <div class="topic-stats">
+                                        <span>22 回复</span>
+                                        <span>1周前</span>
+                                    </div>
+                                </li>
+                                <li class="forum-topic">
+                                    <div class="topic-title">如何设计高效的训练课程</div>
+                                    <div class="topic-stats">
+                                        <span>19 回复</span>
+                                        <span>10天前</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 分享功能 -->
+                    <div class="dashboard-panel" style="margin-top: 40px;">
+                        <h3><i class="fas fa-share-alt"></i> 分享足球社区</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 20px;">邀请更多朋友加入足球社区交流</p>
+                        
+                        <div class="share-buttons">
+                            <button class="share-btn wechat" @click="shareToWechat">
+                                <i class="fab fa-weixin"></i> 微信
+                            </button>
+                            <button class="share-btn weibo" @click="shareToWeibo">
+                                <i class="fab fa-weibo"></i> 微博
+                            </button>
+                            <button class="share-btn xiaohongshu" @click="shareToXiaohongshu">
+                                <i class="fas fa-book"></i> 小红书
+                            </button>
+                            <button class="share-btn" @click="shareToVideoAccount">
+                                <i class="fas fa-video"></i> 视频号
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们页面 -->
+        <section v-if="activeSection === 'about'" id="about-section" class="container">
+            <h2 class="section-title">关于我们</h2>
+            <p class="section-subtitle">连接职业足球与青少年足球的数字化平台，致力于推动中国足球发展</p>
+            
+            <div class="dashboard-panel">
+                <h3><i class="fas fa-info-circle"></i> 平台介绍</h3>
+                <p style="margin-top: 15px; line-height: 1.8; color: var(--text-secondary);">
+                    足球人生数字平台成立于2023年，是一个专注于连接职业足球与青少年足球的数字化平台。我们通过球星数据博物馆、青训展示平台、足球社区和视频图库四大功能模块，打造完整的足球数字生态。
+                </p>
+                <p style="margin-top: 15px; line-height: 1.8; color: var(--text-secondary);">
+                    我们的使命是让每个孩子的足球梦想都有机会被看见，通过数字化手段连接青少年球员、家长、教练和球探，为中国足球的未来发展贡献力量。
+                </p>
+                
+                <div style="margin-top: 30px; display: flex; flex-wrap: wrap; gap: 30px;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fas fa-bullseye"></i> 我们的愿景</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            成为连接中国青少年足球与职业足球的第一数字平台，培养未来足球之星，推动中国足球事业发展。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fas fa-handshake"></i> 我们的价值观</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            诚信、专业、创新、共赢。我们相信通过数字化手段可以让足球教育更加公平、高效。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;"><i class="fas fa-users"></i> 我们的团队</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            由前职业球员、青训教练、数据科学家和互联网产品专家组成的专业团队。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 足球专家咨询 -->
+            <div class="expert-section">
+                <div class="container">
+                    <h2 class="section-title">足球专家咨询</h2>
+                    <p class="section-subtitle">一对一解答孩子足球方面的问题和难题，专业指导助力成长</p>
+                    
+                    <div class="expert-card">
+                        <div class="expert-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="expert-badge">足球专家</div>
+                        <h3 style="color: var(--primary-dark); margin-bottom: 10px;">专业足球教练/前职业球员</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            拥有20年足球训练经验，曾效力于职业俱乐部，现专注于青少年足球培训。擅长技术指导、战术分析、职业规划。
+                        </p>
+                        
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">咨询套餐</h4>
+                        <div class="consultation-plans">
+                            <div class="consultation-plan">
+                                <h4 style="color: var(--primary-dark); margin-bottom: 10px;">基础咨询</h4>
+                                <div class="consultation-price">¥99</div>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">30分钟一对一咨询</p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px;">解答具体技术问题</p>
+                                <button class="plan-btn" style="margin-top: 15px;" @click="selectConsultation('基础咨询')">立即预约</button>
+                            </div>
+                            
+                            <div class="consultation-plan popular">
+                                <h4 style="color: var(--primary-dark); margin-bottom: 10px;">深度指导</h4>
+                                <div class="consultation-price">¥299</div>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">60分钟一对一咨询</p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px;">视频分析+训练计划</p>
+                                <button class="plan-btn" style="margin-top: 15px;" @click="selectConsultation('深度指导')">立即预约</button>
+                            </div>
+                            
+                            <div class="consultation-plan">
+                                <h4 style="color: var(--primary-dark); margin-bottom: 10px;">长期指导</h4>
+                                <div class="consultation-price">¥999</div>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem;">月度跟踪指导</p>
+                                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px;">4次咨询+训练计划调整</p>
+                                <button class="plan-btn" style="margin-top: 15px;" @click="selectConsultation('长期指导')">立即预约</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-section">
+                <h3 class="section-title" style="font-size: 1.8rem;">常见问题</h3>
+                <div class="faq-container">
+                    <div v-for="(faq, index) in aboutFaqs" :key="index" class="faq-item">
+                        <div class="faq-question" @click="toggleAboutFaq(index)">
+                            {{faq.question}}
+                            <i :class="faq.open ? 'fas fa-chevron-up' : 'fas fa-chevron-down'"></i>
+                        </div>
+                        <div class="faq-answer" :class="{active: faq.open}">
+                            {{faq.answer}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-panel">
+                <h3><i class="fas fa-map-marker-alt"></i> 联系我们</h3>
+                <div style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 40px;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">公司地址</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            <i class="fas fa-building" style="margin-right: 10px;"></i> 大连天通金融大厦
+                        </p>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+                            具体楼层和房间号请通过邮箱或电话咨询
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">联系信息</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            <i class="fas fa-envelope" style="margin-right: 10px;"></i> anhao777@qq.com
+                        </p>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+                            <i class="fas fa-phone" style="margin-right: 10px;"></i> 400-888-8888
+                        </p>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+                            <i class="fas fa-clock" style="margin-right: 10px;"></i> 周一至周五 9:00-18:00
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 250px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 15px;">商务合作</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.6;">
+                            <i class="fas fa-handshake" style="margin-right: 10px;"></i> business@football-life.com
+                        </p>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-top: 10px;">
+                            欢迎青训机构、足球学校、赛事主办方与我们合作
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分享功能 -->
+            <div class="dashboard-panel" style="margin-top: 40px;">
+                <h3><i class="fas fa-share-alt"></i> 分享平台</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">把足球人生数字平台分享给更多朋友</p>
+                
+                <div class="share-buttons">
+                    <button class="share-btn wechat" @click="shareToWechat">
+                        <i class="fab fa-weixin"></i> 微信
+                    </button>
+                    <button class="share-btn weibo" @click="shareToWeibo">
+                        <i class="fab fa-weibo"></i> 微博
+                    </button>
+                    <button class="share-btn xiaohongshu" @click="shareToXiaohongshu">
+                        <i class="fas fa-book"></i> 小红书
+                    </button>
+                    <button class="share-btn douyin" @click="shareToDouyin">
+                        <i class="fab fa-tiktok"></i> 抖音
+                    </button>
+                    <button class="share-btn" @click="shareToVideoAccount">
+                        <i class="fas fa-video"></i> 视频号
+                    </button>
+                    <button class="share-btn bilibili" @click="shareToBilibili">
+                        <i class="fab fa-bilibili"></i> B站
+                    </button>
+                    <button class="share-btn kuaishou" @click="shareToKuaishou">
+                        <i class="fas fa-play-circle"></i> 快手
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>足球人生数字平台</h3>
+                        <p style="color: #bbb; line-height: 1.6; margin-top: 15px;">
+                            连接职业足球与青少年足球的数字化平台，致力于推动中国足球发展，让每个孩子的足球梦想都有机会被看见。
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-icon" @click.prevent="shareToWechat"><i class="fab fa-weixin"></i></a>
+                            <a href="#" class="social-icon" @click.prevent="shareToWeibo"><i class="fab fa-weibo"></i></a>
+                            <a href="#" class="social-icon" @click.prevent="shareToDouyin"><i class="fab fa-tiktok"></i></a>
+                            <a href="#" class="social-icon" @click.prevent="shareToBilibili"><i class="fab fa-bilibili"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>快速链接</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" @click="switchSection('home')">首页</a></li>
+                            <li><a href="#" @click="switchSection('museum')">球星博物馆</a></li>
+                            <li><a href="#" @click="switchSection('youth')">青训展示平台</a></li>
+                            <li><a href="#" @click="switchSection('gallery')">视频图库</a></li>
+                            <li><a href="#" @click="switchSection('community')">足球社区</a></li>
+                            <li><a href="#" @click="switchSection('about')">关于我们</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>联系我们</h3>
+                        <ul class="footer-links">
+                            <li><i class="fas fa-envelope" style="margin-right: 8px;"></i> anhao777@qq.com</li>
+                            <li><i class="fas fa-phone" style="margin-right: 8px;"></i> 400-888-8888</li>
+                            <li><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> 大连天通金融大厦</li>
+                            <li><i class="fas fa-clock" style="margin-right: 8px;"></i> 周一至周五 9:00-18:00</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    <p>© 2024 足球人生数字平台 版权所有 | 辽ICP备2024000000号</p>
+                    <p style="margin-top: 10px;">数据仅供参考，以官方发布为准 | 联系我们：anhao777@qq.com</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- 上传视频模态框（步骤1：选择套餐） -->
+        <div v-if="showUploadModal && uploadStep === 1" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 style="color: var(--primary-dark); font-size: 1.5rem;">上传青少年球员视频</h3>
+                    <button @click="closeUploadModal" class="close-btn">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">球员姓名</label>
+                        <input type="text" v-model="uploadForm.playerName" placeholder="请输入小球员姓名" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">年龄</label>
+                        <input type="number" v-model="uploadForm.age" min="6" max="18" placeholder="请输入年龄" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">视频标题</label>
+                        <input type="text" v-model="uploadForm.title" placeholder="例如：2024年校园足球联赛精彩集锦" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">选择推广套餐</label>
+                        <select v-model="uploadForm.plan" class="form-select">
+                            <option value="基础展示">基础展示 (¥28/月)</option>
+                            <option value="黄金推广">黄金推广 (¥58/月)</option>
+                            <option value="精英计划">精英计划 (定制)</option>
+                        </select>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+                            {{ getPlanDescription(uploadForm.plan) }}
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">联系方式</label>
+                        <input type="text" v-model="uploadForm.contact" placeholder="手机号或微信号" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">视频文件</label>
+                        <div class="upload-area" @click="triggerFileUpload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <div>点击或拖拽上传视频文件</div>
+                            <div style="font-size: 0.9rem; margin-top: 10px;">支持MP4, AVI, MOV格式，最大500MB</div>
+                            <input type="file" id="video-upload" accept="video/*" style="display: none;" @change="handleFileUpload">
+                        </div>
+                        <div v-if="uploadForm.fileName" style="margin-top: 10px; color: var(--primary-green); font-weight: bold;">
+                            <i class="fas fa-check-circle"></i> 已选择文件: {{ uploadForm.fileName }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button @click="closeUploadModal" class="btn btn-secondary">取消</button>
+                    <button @click="goToPaymentStep" class="btn btn-orange">下一步：去支付</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 支付二维码模态框（步骤2：支付） -->
+        <div v-if="showUploadModal && uploadStep === 2" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 style="color: var(--primary-dark); font-size: 1.5rem;">支付确认</h3>
+                    <button @click="closeUploadModal" class="close-btn">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 10px;">您选择的套餐: {{ uploadForm.plan }}</h4>
+                        <div class="qr-amount">{{ getPlanPrice(uploadForm.plan) }}</div>
+                        <p style="color: var(--text-secondary); margin-top: 10px;">
+                            请扫描下方二维码完成支付，支付成功后即可上传视频
+                        </p>
+                    </div>
+                    
+                    <div class="qr-codes">
+                        <div class="qr-container">
+                            <div class="qr-title">微信支付</div>
+                            <div class="qr-image">
+                                <div class="qr-placeholder">
+                                    <i class="fab fa-weixin"></i>
+                                    <div>微信收款码</div>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">金额: {{ getPlanPrice(uploadForm.plan) }}</div>
+                                </div>
+                            </div>
+                            <div class="qr-amount">{{ getPlanPrice(uploadForm.plan) }}</div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">
+                                使用微信扫一扫
+                            </p>
+                        </div>
+                        
+                        <div class="qr-container">
+                            <div class="qr-title">支付宝支付</div>
+                            <div class="qr-image">
+                                <div class="qr-placeholder">
+                                    <i class="fab fa-alipay"></i>
+                                    <div>支付宝收款码</div>
+                                    <div style="font-size: 0.8rem; margin-top: 5px;">金额: {{ getPlanPrice(uploadForm.plan) }}</div>
+                                </div>
+                            </div>
+                            <div class="qr-amount">{{ getPlanPrice(uploadForm.plan) }}</div>
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">
+                                使用支付宝扫一扫
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(0, 255, 133, 0.1); padding: 20px; border-radius: 8px; margin-top: 30px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 10px;"><i class="fas fa-info-circle"></i> 支付说明</h4>
+                        <ul style="color: var(--text-secondary); line-height: 1.6; padding-left: 20px;">
+                            <li>支付成功后，请点击"我已支付"按钮继续上传视频</li>
+                            <li>如支付遇到问题，请联系客服：400-888-8888</li>
+                            <li>费用用于平台维护和推广服务，支付后不支持退款</li>
+                            <li>视频将在24小时内审核，审核通过后展示在平台</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 30px; display: flex; gap: 15px;">
+                        <button @click="uploadStep = 1" class="btn btn-secondary">返回修改</button>
+                        <button @click="simulatePaymentSuccess" class="btn btn-orange" style="flex: 1;">
+                            <i class="fas fa-check-circle"></i> 我已支付，继续上传
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 上传成功模态框（步骤3：上传成功） -->
+        <div v-if="showUploadSuccessModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 style="color: var(--primary-dark); font-size: 1.5rem;">上传成功</h3>
+                    <button @click="closeSuccessModal" class="close-btn">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div style="text-align: center; padding: 30px 0;">
+                        <div style="width: 80px; height: 80px; background: var(--primary-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                            <i class="fas fa-check" style="color: white; font-size: 2.5rem;"></i>
+                        </div>
+                        <h3 style="color: var(--primary-dark); margin-bottom: 15px;">视频上传成功！</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px;">
+                            您的视频已成功提交，我们的团队将在24小时内进行审核。
+                            审核通过后，视频将展示在青训展示平台。
+                        </p>
+                        
+                        <div style="background: rgba(0, 255, 133, 0.1); padding: 20px; border-radius: 8px; text-align: left; margin-top: 20px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 10px;">上传信息摘要</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="color: var(--text-secondary);">球员姓名:</div>
+                                <div style="font-weight: bold;">{{ uploadForm.playerName }}</div>
+                                
+                                <div style="color: var(--text-secondary);">套餐类型:</div>
+                                <div style="font-weight: bold;">{{ uploadForm.plan }}</div>
+                                
+                                <div style="color: var(--text-secondary);">支付金额:</div>
+                                <div style="font-weight: bold;">{{ getPlanPrice(uploadForm.plan) }}</div>
+                                
+                                <div style="color: var(--text-secondary);">上传时间:</div>
+                                <div style="font-weight: bold;">{{ new Date().toLocaleDateString() }}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 分享功能 -->
+                        <div style="margin-top: 30px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 15px;">分享这个好消息</h4>
+                            <div class="share-buttons" style="justify-content: center;">
+                                <button class="share-btn wechat" @click="shareToWechat">
+                                    <i class="fab fa-weixin"></i>
+                                </button>
+                                <button class="share-btn weibo" @click="shareToWeibo">
+                                    <i class="fab fa-weibo"></i>
+                                </button>
+                                <button class="share-btn douyin" @click="shareToDouyin">
+                                    <i class="fab fa-tiktok"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button @click="closeSuccessModal" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-home"></i> 返回首页
+                            </button>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px;">
+                                如有问题，请联系客服：anhao777@qq.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 专家咨询预约模态框 -->
+        <div v-if="showConsultationModal" class="modal-overlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 style="color: var(--primary-dark); font-size: 1.5rem;">足球专家咨询预约</h3>
+                    <button @click="showConsultationModal = false" class="close-btn">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div style="width: 80px; height: 80px; background: var(--primary-orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                            <i class="fas fa-user-tie" style="color: white; font-size: 2rem;"></i>
+                        </div>
+                        <h4 style="color: var(--primary-dark); margin-bottom: 5px;">足球专家一对一咨询</h4>
+                        <p style="color: var(--text-secondary);">套餐: {{ consultationPlan }}</p>
+                        <div class="qr-amount">{{ getConsultationPrice(consultationPlan) }}</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">您的姓名</label>
+                        <input type="text" v-model="consultationForm.name" placeholder="请输入您的姓名" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">联系方式</label>
+                        <input type="text" v-model="consultationForm.contact" placeholder="手机号或微信号" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">孩子年龄</label>
+                        <input type="number" v-model="consultationForm.childAge" min="6" max="18" placeholder="请输入孩子年龄" class="form-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">主要问题/需求</label>
+                        <textarea v-model="consultationForm.question" placeholder="请描述您想咨询的问题或需求..." class="form-input" rows="4" style="resize: vertical;"></textarea>
+                    </div>
+                    
+                    <div style="background: rgba(0, 255, 133, 0.1); padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <h4 style="color: var(--primary-dark); margin-bottom: 10px;"><i class="fas fa-info-circle"></i> 咨询说明</h4>
+                        <ul style="color: var(--text-secondary); line-height: 1.6; padding-left: 20px; font-size: 0.9rem;">
+                            <li>支付成功后，专家将在24小时内联系您</li>
+                            <li>咨询将通过微信或电话进行</li>
+                            <li>请提前准备好相关问题和视频材料</li>
+                            <li>如有特殊时间要求，请在备注中说明</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button @click="showConsultationModal = false" class="btn btn-secondary">取消</button>
+                    <button @click="confirmConsultation" class="btn btn-orange">确认并支付</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+        
+        createApp({
+            setup() {
+                // 状态管理
+                const activeSection = ref('home');
+                const currentPlayer = ref('梅西');
+                const showUploadModal = ref(false);
+                const uploadStep = ref(1); // 1: 选择套餐, 2: 支付, 3: 上传成功
+                const showUploadSuccessModal = ref(false);
+                const showConsultationModal = ref(false);
+                const consultationPlan = ref('');
+                
+                // 上传表单
+                const uploadForm = ref({
+                    playerName: '',
+                    age: '',
+                    title: '',
+                    plan: '基础展示',
+                    contact: '',
+                    fileName: ''
+                });
+                
+                // 咨询表单
+                const consultationForm = ref({
+                    name: '',
+                    contact: '',
+                    childAge: '',
+                    question: '',
+                    plan: ''
+                });
+                
+                // 常见问题
+                const youthFaqs = ref([
+                    {
+                        question: 'Q: 上传视频的费用是多少？',
+                        answer: 'A: 基础展示28元/月，黄金推广58元/月，精英计划可定制。费用用于平台维护和推广服务。',
+                        open: true
+                    },
+                    {
+                        question: 'Q: 如何上传比赛视频？',
+                        answer: 'A: 请按照以下步骤操作：1. 点击网站右上角的"上传视频"按钮；2. 填写球员信息、选择套餐、上传视频文件（支持MP4, AVI, MOV格式，最大500MB）；3. 使用微信或支付宝扫描二维码完成支付；4. 支付成功后，视频将进入审核，24小时内审核完成并展示在平台上。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 视频会被谁看到？',
+                        answer: 'A: 职业俱乐部球探、青训教练、足球学校招生老师、以及广大足球爱好者。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 成功案例有哪些？',
+                        answer: 'A: 已有12名小球员通过平台展示被职业俱乐部青训营选中，58名球员获得试训机会。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 视频上传失败怎么办？',
+                        answer: 'A: 请检查：1) 视频格式（支持MP4、MOV、AVI格式）2) 文件大小（不超过500MB）3) 网络状态 4) 支付状态。如仍无法解决，请联系客服。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 如何联系平台？',
+                        answer: 'A: 客服邮箱：anhao777@qq.com，客服电话：400-888-8888，地址：大连天通金融大厦。',
+                        open: false
+                    }
+                ]);
+                
+                const aboutFaqs = ref([
+                    {
+                        question: 'Q: 平台的主要功能是什么？',
+                        answer: 'A: 平台主要提供四大功能：1) 球星数字博物馆 - 查看职业球员数据 2) 青训展示平台 - 上传和展示青少年球员视频 3) 足球社区 - 家长、教练、球探交流 4) 视频图库 - 观看足球相关视频。',
+                        open: true
+                    },
+                    {
+                        question: 'Q: 平台如何保证视频的版权和安全？',
+                        answer: 'A: 我们使用合法授权的内容，并要求用户上传原创或已获授权的视频。所有视频都会经过审核，确保内容安全、合法。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 平台如何帮助青少年球员？',
+                        answer: 'A: 通过展示球员视频，让更多教练、球探看到孩子的才华；通过数据分析，了解球员成长轨迹；通过社区交流，获取专业建议。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 平台是否收费？',
+                        answer: 'A: 球星博物馆、足球社区和视频图库完全免费。青训展示平台提供免费基础功能和付费推广服务，家长可以根据需求选择。足球专家咨询为付费服务。',
+                        open: false
+                    },
+                    {
+                        question: 'Q: 如何成为平台的合作机构？',
+                        answer: 'A: 欢迎青训机构、足球学校、赛事主办方与我们合作。请联系商务合作邮箱：business@football-life.com。',
+                        open: false
+                    }
+                ]);
+                
+                // 球员数据
+                const players = ref(['梅西', 'C罗', '内马尔', '姆巴佩', '测试球员']);
+                
+                const playerData = ref({
+                    '梅西': {
+                        stats: { matches: 1034, goals: 821, assists: 357, trophies: 44 },
+                        trophies: [
+                            { name: '世界杯冠军', year: 2022, icon: 'fas fa-trophy' },
+                            { name: '7次金球奖', year: 2023, icon: 'fas fa-medal' },
+                            { name: '欧冠冠军', year: 2015, icon: 'fas fa-star' },
+                            { name: '西甲冠军', year: 2021, icon: 'fas fa-shield-alt' },
+                            { name: '金靴奖', year: 2019, icon: 'fas fa-boot' },
+                            { name: '劳伦斯奖', year: 2020, icon: 'fas fa-award' }
+                        ]
+                    },
+                    'C罗': {
+                        stats: { matches: 1183, goals: 868, assists: 268, trophies: 34 },
+                        trophies: [
+                            { name: '欧洲杯冠军', year: 2016, icon: 'fas fa-trophy' },
+                            { name: '5次金球奖', year: 2017, icon: 'fas fa-medal' },
+                            { name: '欧冠冠军', year: 2018, icon: 'fas fa-star' },
+                            { name: '英超冠军', year: 2013, icon: 'fas fa-shield-alt' },
+                            { name: '金靴奖', year: 2015, icon: 'fas fa-boot' },
+                            { name: '欧足联最佳', year: 2014, icon: 'fas fa-award' }
+                        ]
+                    },
+                    '测试球员': {
+                        stats: { matches: 127, goals: 42, assists: 28, trophies: 9 },
+                        trophies: [
+                            { name: '金靴奖', year: 2020, icon: 'fas fa-boot' },
+                            { name: '联赛冠军', year: 2019, icon: 'fas fa-medal' },
+                            { name: '最佳新人', year: 2017, icon: 'fas fa-star' },
+                            { name: '杯赛冠军', year: 2018, icon: 'fas fa-cup' }
+                        ]
+                    }
+                });
+                
+                // 青少年视频数据
+                const youthVideos = ref([
+                    {
+                        id: 1,
+                        title: '校园足球联赛精彩表现',
+                        playerName: '李明',
+                        age: 12,
+                        duration: '3:45',
+                        uploadDate: '2024-03-15',
+                        tags: ['前锋', '进球', '校园联赛']
+                    },
+                    {
+                        id: 2,
+                        title: '青训营技术训练集锦',
+                        playerName: '张伟',
+                        age: 14,
+                        duration: '4:20',
+                        uploadDate: '2024-03-14',
+                        tags: ['中场', '传球', '青训营']
+                    },
+                    {
+                        id: 3,
+                        title: '青少年锦标赛决赛',
+                        playerName: '王芳',
+                        age: 13,
+                        duration: '5:15',
+                        uploadDate: '2024-03-12',
+                        tags: ['守门员', '扑救', '锦标赛']
+                    },
+                    {
+                        id: 4,
+                        title: '足球学校训练日常',
+                        playerName: '刘强',
+                        age: 15,
+                        duration: '6:30',
+                        uploadDate: '2024-03-10',
+                        tags: ['后卫', '防守', '足球学校']
+                    }
+                ]);
+                
+                // 视频图库数据
+                const galleryVideos = ref([
+                    {
+                        id: 1,
+                        title: '梅西十大精彩进球',
+                        category: '球星集锦',
+                        duration: '8:15',
+                        uploadDate: '2024-03-10',
+                        views: '12500',
+                        tags: ['梅西', '进球', '集锦']
+                    },
+                    {
+                        id: 2,
+                        title: '青少年足球基础训练教程',
+                        category: '教学视频',
+                        duration: '15:30',
+                        uploadDate: '2024-03-08',
+                        views: '8900',
+                        tags: ['训练', '教程', '基础']
+                    },
+                    {
+                        id: 3,
+                        title: '2023青少年足球锦标赛决赛',
+                        category: '比赛录像',
+                        duration: '45:20',
+                        uploadDate: '2024-03-05',
+                        views: '15600',
+                        tags: ['锦标赛', '决赛', '青少年']
+                    },
+                    {
+                        id: 4,
+                        title: '足球战术分析：4-3-3阵型',
+                        category: '战术分析',
+                        duration: '12:45',
+                        uploadDate: '2024-03-01',
+                        views: '7200',
+                        tags: ['战术', '阵型', '分析']
+                    },
+                    {
+                        id: 5,
+                        title: 'C罗职业生涯精彩瞬间',
+                        category: '球星集锦',
+                        duration: '10:20',
+                        uploadDate: '2024-02-28',
+                        views: '18900',
+                        tags: ['C罗', '职业生涯', '集锦']
+                    },
+                    {
+                        id: 6,
+                        title: '守门员扑救技巧训练',
+                        category: '教学视频',
+                        duration: '18:10',
+                        uploadDate: '2024-02-25',
+                        views: '6400',
+                        tags: ['守门员', '扑救', '训练']
+                    }
+                ]);
+                
+                // 方法
+                const switchSection = (section) => {
+                    activeSection.value = section;
+                    window.scrollTo(0, 0);
+                };
+                
+                const startUploadProcess = () => {
+                    uploadStep.value = 1;
+                    showUploadModal.value = true;
+                };
+                
+                const closeUploadModal = () => {
+                    showUploadModal.value = false;
+                    // 重置表单
+                    uploadForm.value = {
+                        playerName: '',
+                        age: '',
+                        title: '',
+                        plan: '基础展示',
+                        contact: '',
+                        fileName: ''
+                    };
+                };
+                
+                const goToPaymentStep = () => {
+                    if (!uploadForm.value.playerName || !uploadForm.value.age || !uploadForm.value.title || !uploadForm.value.contact) {
+                        alert('请填写完整信息');
+                        return;
+                    }
+                    
+                    if (!uploadForm.value.fileName) {
+                        alert('请选择要上传的视频文件');
+                        return;
+                    }
+                    
+                    uploadStep.value = 2;
+                };
+                
+                const simulatePaymentSuccess = () => {
+                    // 模拟支付成功
+                    showUploadModal.value = false;
+                    showUploadSuccessModal.value = true;
+                };
+                
+                const closeSuccessModal = () => {
+                    showUploadSuccessModal.value = false;
+                    // 重置表单
+                    uploadForm.value = {
+                        playerName: '',
+                        age: '',
+                        title: '',
+                        plan: '基础展示',
+                        contact: '',
+                        fileName: ''
+                    };
+                };
+                
+                const selectPlan = (plan) => {
+                    alert(`您选择了 ${plan} 套餐，即将开始上传流程`);
+                    startUploadProcess();
+                };
+                
+                const selectConsultation = (plan) => {
+                    consultationPlan.value = plan;
+                    consultationForm.value.plan = plan;
+                    showConsultationModal.value = true;
+                };
+                
+                const confirmConsultation = () => {
+                    if (!consultationForm.value.name || !consultationForm.value.contact || !consultationForm.value.childAge || !consultationForm.value.question) {
+                        alert('请填写完整信息');
+                        return;
+                    }
+                    
+                    alert(`咨询预约成功！\n专家将在24小时内联系您。\n套餐：${consultationPlan.value}\n支付金额：${getConsultationPrice(consultationPlan.value)}`);
+                    showConsultationModal.value = false;
+                    
+                    // 重置表单
+                    consultationForm.value = {
+                        name: '',
+                        contact: '',
+                        childAge: '',
+                        question: '',
+                        plan: ''
+                    };
+                };
+                
+                const playVideo = (video) => {
+                    alert(`播放视频: ${video.title}`);
+                };
+                
+                const toggleFaq = (index) => {
+                    youthFaqs.value[index].open = !youthFaqs.value[index].open;
+                };
+                
+                const toggleAboutFaq = (index) => {
+                    aboutFaqs.value[index].open = !aboutFaqs.value[index].open;
+                };
+                
+                const getPlanDescription = (plan) => {
+                    const descriptions = {
+                        '基础展示': '基础展示28元/月，视频展示30天，平台内基础展示，一对一足球知识交流',
+                        '黄金推广': '黄金推广58元/月，视频展示90天，平台内展示，平台首页推荐，一对一足球知识交流',
+                        '精英计划': '精英计划可定制，全年视频展示，首页置顶推荐，一对一足球知识交流，专业成长指导'
+                    };
+                    return descriptions[plan] || '';
+                };
+                
+                const getPlanPrice = (plan) => {
+                    const prices = {
+                        '基础展示': '¥28',
+                        '黄金推广': '¥58',
+                        '精英计划': '定制价格'
+                    };
+                    return prices[plan] || '¥0';
+                };
+                
+                const getConsultationPrice = (plan) => {
+                    const prices = {
+                        '基础咨询': '¥99',
+                        '深度指导': '¥299',
+                        '长期指导': '¥999'
+                    };
+                    return prices[plan] || '¥0';
+                };
+                
+                const triggerFileUpload = () => {
+                    document.getElementById('video-upload').click();
+                };
+                
+                const handleFileUpload = (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        // 检查文件大小（最大500MB）
+                        if (file.size > 500 * 1024 * 1024) {
+                            alert('文件大小不能超过500MB');
+                            return;
+                        }
+                        
+                        // 检查文件类型
+                        const validTypes = ['video/mp4', 'video/avi', 'video/quicktime'];
+                        if (!validTypes.includes(file.type)) {
+                            alert('仅支持MP4, AVI, MOV格式的视频文件');
+                            return;
+                        }
+                        
+                        uploadForm.value.fileName = file.name;
+                    }
+                };
+                
+                // 分享功能
+                const shareToWechat = () => {
+                    alert('分享到微信（功能演示）');
+                };
+                
+                const shareToWeibo = () => {
+                    alert('分享到微博（功能演示）');
+                };
+                
+                const shareToXiaohongshu = () => {
+                    alert('分享到小红书（功能演示）');
+                };
+                
+                const shareToDouyin = () => {
+                    alert('分享到抖音（功能演示）');
+                };
+                
+                const shareToVideoAccount = () => {
+                    alert('分享到视频号（功能演示）');
+                };
+                
+                const shareToBilibili = () => {
+                    alert('分享到B站（功能演示）');
+                };
+                
+                const shareToKuaishou = () => {
+                    alert('分享到快手（功能演示）');
+                };
+                
+                return {
+                    activeSection,
+                    currentPlayer,
+                    showUploadModal,
+                    uploadStep,
+                    showUploadSuccessModal,
+                    showConsultationModal,
+                    consultationPlan,
+                    uploadForm,
+                    consultationForm,
+                    players,
+                    playerData,
+                    youthVideos,
+                    galleryVideos,
+                    youthFaqs,
+                    aboutFaqs,
+                    switchSection,
+                    startUploadProcess,
+                    closeUploadModal,
+                    goToPaymentStep,
+                    simulatePaymentSuccess,
+                    closeSuccessModal,
+                    selectPlan,
+                    selectConsultation,
+                    confirmConsultation,
+                    playVideo,
+                    toggleFaq,
+                    toggleAboutFaq,
+                    getPlanDescription,
+                    getPlanPrice,
+                    getConsultationPrice,
+                    triggerFileUpload,
+                    handleFileUpload,
+                    shareToWechat,
+                    shareToWeibo,
+                    shareToXiaohongshu,
+                    shareToDouyin,
+                    shareToVideoAccount,
+                    shareToBilibili,
+                    shareToKuaishou
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
