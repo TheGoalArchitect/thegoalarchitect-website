@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足球人生数字平台 | 青少年足球才华展示</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.2rem 5%;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* 英雄区域 */
+        .hero {
+            padding: 180px 5% 100px;
+            background: var(--gradient);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path fill="rgba(255,255,255,0.05)" d="M0,0L1000,0L1000,1000L0,1000Z"/></svg>');
+            background-size: 200px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px);
+        }
+
+        /* 统计数字 */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            display: block;
+            color: white;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* 功能区域 */
+        .section {
+            padding: 120px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            color: var(--primary);
+            font-weight: 800;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* 腾讯问卷区域 */
+        .form-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 30px;
+            padding: 4rem;
+            margin-top: 2rem;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .form-subtitle {
+            font-size: 1.2rem;
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 2.5rem;
+        }
+
+        /* 套餐价格 */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-card.popular {
+            border: 3px solid var(--accent);
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .pricing-header {
+            background: var(--gradient);
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 800;
+        }
+
+        .price span {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .pricing-features {
+            padding: 2.5rem;
+            list-style: none;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .fa-check {
+            color: var(--accent);
+        }
+
+        .pricing-features .fa-times {
+            color: #e2e8f0;
+        }
+
+        .btn-pricing {
+            display: block;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 18px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+
+        .btn-pricing:hover {
+            background: #1e40af;
+        }
+
+        /* 支付区域 */
+        .payment-section {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            border-radius: 30px;
+            padding: 4rem;
+            margin-top: 4rem;
+        }
+
+        .payment-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .qrcode-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .qrcode-images {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .qrcode-item {
+            text-align: center;
+        }
+
+        .qrcode-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        .qrcode-note {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+
+        /* FAQ区域 */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .faq-question {
+            padding: 1.8rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2rem;
+            background: white;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 2rem 2rem;
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 2rem;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                gap: 1rem;
+                z-index: 1000;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .payment-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-section, .payment-section {
+                padding: 2rem;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .hero {
+                padding: 150px 5% 80px;
+            }
+
+            .section {
+                padding: 80px 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-futbol"></i>
+                <span>足球人生</span>
+            </a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">核心功能</a></li>
+                <li><a href="#form">上传视频</a></li>
+                <li><a href="#pricing">套餐价格</a></li>
+                <li><a href="#payment">支付方式</a></li>
+                <li><a href="#faq">常见问题</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>足球人生数字平台</h1>
+            <p>专业的青少年足球才华展示平台，连接未来之星与伯乐的桥梁。<br>展示你的足球才华，让世界看见你的光芒。</p>
+            <div class="cta-buttons">
+                <a href="#form" class="btn-primary">
+                    <i class="fas fa-upload"></i>立即上传视频
+                </a>
+                <a href="#pricing" class="btn-secondary">
+                    <i class="fas fa-star"></i>查看套餐详情
+                </a>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">注册球员</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">120+</span>
+                    <span class="stat-label">合作教练</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">成功签约</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心功能 -->
+    <section id="features" class="section">
+        <h2 class="section-title">核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>专业视频展示</h3>
+                <p>高清视频多角度展示球员技术特点，专业剪辑呈现最佳表现。支持多平台分享，扩大曝光机会。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>数据追踪分析</h3>
+                <p>实时追踪视频观看数据，分析观看时长、来源分布，提供专业数据报告帮助优化展示效果。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>精准匹配推荐</h3>
+                <p>智能算法根据球员位置、年龄、技术水平，精准匹配适合的教练、球探和俱乐部。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>专业审核保障</h3>
+                <p>每条视频经过专业教练审核，确保内容质量，为球员提供最专业的展示平台保障。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 腾讯问卷表单 -->
+    <section id="form" class="section">
+        <div class="form-section">
+            <div class="form-container">
+                <h2 class="form-title">
+                    <i class="fas fa-file-upload"></i>上传足球视频
+                </h2>
+                <p class="form-subtitle">填写以下表单，展示你的足球才华。我们将在24小时内完成审核。</p>
+                
+                <!-- 腾讯问卷 -->
+                <iframe 
+                    src="https://wj.qq.com/s2/25711354/66c9/" 
+                    frameborder="0" 
+                    width="100%" 
+                    height="800" 
+                    style="border-radius: 15px; border: 1px solid #e1e4e8; margin-bottom: 2rem;"
+                    allowfullscreen>
+                </iframe>
+                
+                <div style="background: #f8fafc; padding: 1.5rem; border-radius: 10px; border-left: 4px solid var(--accent);">
+                    <p style="margin: 0; font-size: 1.1rem;">
+                        <i class="fas fa-info-circle" style="color: var(--accent); margin-right: 10px;"></i>
+                        提交表单后，请根据下方支付指引完成费用支付，我们将在24小时内审核您的视频并上线展示。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 套餐价格 -->
+    <section id="pricing" class="section">
+        <h2 class="section-title">套餐价格</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>基础展示</h3>
+                    <div class="price">¥28<span>/月</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>基础视频展示</li>
+                    <li><i class="fas fa-check"></i>30天展示期</li>
+                    <li><i class="fas fa-check"></i>基础数据统计</li>
+                    <li><i class="fas fa-times"></i>优先推荐</li>
+                    <li><i class="fas fa-times"></i>专业分析报告</li>
+                </ul>
+                <a href="#form" class="btn-pricing">立即选择</a>
+            </div>
+            
+            <div class="pricing-card popular">
+                <div class="popular-badge">最受欢迎</div>
+                <div class="pricing-header">
+                    <h3>黄金推广</h3>
+                    <div class="price">¥58<span>/月</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>高清视频展示</li>
+                    <li><i class="fas fa-check"></i>60天展示期</li>
+                    <li><i class="fas fa-check"></i>详细数据统计</li>
+                    <li><i class="fas fa-check"></i>优先推荐给教练</li>
+                    <li><i class="fas fa-times"></i>专业分析报告</li>
+                </ul>
+                <a href="#form" class="btn-pricing">立即选择</a>
+            </div>
+            
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>专业套餐</h3>
+                    <div class="price">¥128<span>/月</span></div>
+                </div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i>超清视频展示</li>
+                    <li><i class="fas fa-check"></i>90天展示期</li>
+                    <li><i class="fas fa-check"></i>全面数据追踪</li>
+                    <li><i class="fas fa-check"></i>置顶优先推荐</li>
+                    <li><i class="fas fa-check"></i>专业能力分析报告</li>
+                </ul>
+                <a href="#form" class="btn-pricing">立即选择</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 支付方式 -->
+    <section id="payment" class="section">
+        <div class="payment-section">
+            <h2 class="section-title" style="color: white;">支付方式</h2>
+            <div class="payment-content">
+                <div>
+                    <h3 style="font-size: 2rem; margin-bottom: 1.5rem;">支付流程说明</h3>
+                    <ol style="font-size: 1.2rem; line-height: 2; margin-bottom: 2rem;">
+                        <li>填写并提交上方表单。</li>
+                        <li>添加客服微信 <strong style="color: var(--accent);">xlTalentService</strong> 获取支付二维码。</li>
+                        <li>支付时备注 <strong>球员姓名+手机号</strong>。</li>
+                        <li>发送支付截图给客服确认。</li>
+                        <li>24小时内完成审核并上线展示。</li>
+                    </ol>
+                    <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 10px;">
+                        <p style="margin-bottom: 10px; font-size: 1.1rem;">
+                            <i class="fas fa-weixin" style="color: #10b981; margin-right: 10px;"></i>
+                            <strong>客服微信：</strong> xlTalentService
+                        </p>
+                        <p style="font-size: 1.1rem;">
+                            <i class="fas fa-clock" style="color: #10b981; margin-right: 10px;"></i>
+                            <strong>客服时间：</strong> 9:00 - 21:00
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="qrcode-container">
+                    <h4 style="font-size: 1.5rem; margin-bottom: 1.5rem;">扫码支付</h4>
+                    <div class="qrcode-images">
+                        <div class="qrcode-item">
+                            <p style="margin-bottom: 1rem; font-weight: 600;">微信支付</p>
+                            <!-- 请确保图片路径正确 -->
+                            <img src="images/wechat-pay.jpg" alt="微信收款码" class="qrcode-img">
+                        </div>
+                        <div class="qrcode-item">
+                            <p style="margin-bottom: 1rem; font-weight: 600;">支付宝</p>
+                            <img src="images/alipay.jpg" alt="支付宝收款码" class="qrcode-img">
+                        </div>
+                    </div>
+                    <p class="qrcode-note">
+                        支付时务必备注 <strong style="color: var(--accent);">球员姓名+手机号</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section id="faq" class="section">
+        <h2 class="section-title">常见问题</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>视频有什么具体要求？</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>建议时长2-3分钟，清晰度至少720p，展示传球、射门、盘带等多种技术动作，穿着统一队服。视频大小不超过500MB，支持MP4、MOV、AVI格式。</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>审核需要多长时间？</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>我们承诺在24小时内完成审核。工作日（9:00-18:00）提交的视频通常4-8小时内完成审核，周末提交的视频也会在24小时内处理。</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>如何知道我的视频被查看了？</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>我们每月会发送一次详细的数据报告，包含观看次数、平均观看时长、观看者地区分布等信息。黄金套餐以上用户可随时向客服查询实时数据。</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>如果对展示效果不满意可以退款吗？</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>视频审核通过上线后3天内，如果对展示效果不满意，可以申请退款（扣除30%服务费）。上线3天后不再接受退款申请。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>足球人生数字平台</h3>
+                <p style="margin-top: 1rem; opacity: 0.9;">专注于青少年足球人才培养，连接未来之星与伯乐，为中国足球发掘更多潜力人才。</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-weixin"></i></a>
+                    <a href="#"><i class="fab fa-weibo"></i></a>
+                    <a href="#"><i class="fab fa-douyin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>快速链接</h3>
+                <ul style="list-style: none; margin-top: 1rem;">
+                    <li><a href="#home" style="color: white; text-decoration: none; opacity: 0.9; display: block; padding: 8px 0;">首页</a></li>
+                    <li><a href="#features" style="color: white; text-decoration: none; opacity: 0.9; display: block; padding: 8px 0;">核心功能</a></li>
+                    <li><a href="#pricing" style="color: white; text-decoration: none; opacity: 0.9; display: block; padding: 8px 0;">套餐价格</a></li>
+                    <li><a href="#faq" style="color: white; text-decoration: none; opacity: 0.9; display: block; padding: 8px 0;">常见问题</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>联系我们</h3>
+                <ul style="list-style: none; margin-top: 1rem;">
+                    <li style="padding: 8px 0; opacity: 0.9;"><i class="fas fa-weixin"></i> 微信：xlTalentService</li>
+                    <li style="padding: 8px 0; opacity: 0.9;"><i class="fas fa-envelope"></i> 邮箱：contact@footballtalent.com</li>
+                    <li style="padding: 8px 0; opacity: 0.9;"><i class="fas fa-phone"></i> 客服：400-123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 足球人生数字平台. 保留所有权利. | The Goal Architect</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
