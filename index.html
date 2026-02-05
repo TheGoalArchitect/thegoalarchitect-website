@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>足球人生数字平台 - 青少年足球才华展示</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#home" class="logo"><i class="fas fa-futbol"></i><span>足球人生</span></a>
+            <div class="nav-links">
+                <a href="#home">首页</a><a href="#features">功能</a><a href="#showcase">展示</a><a href="#upload">上传视频</a><a href="#pricing">套餐</a><a href="#contact">联系我们</a>
+            </div>
+            <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>让世界看见<span class="highlight">你的足球才华</span></h1>
+                <p class="subtitle">专业的青少年足球视频展示平台<br>连接球员、教练与球探的桥梁</p>
+                <div class="cta-buttons">
+                    <a href="#upload" class="btn-primary"><i class="fas fa-upload"></i> 立即上传视频</a>
+                    <a href="#showcase" class="btn-secondary"><i class="fas fa-play-circle"></i> 查看球员展示</a>
+                </div>
+                <div class="stats">
+                    <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">注册球员</span></div>
+                    <div class="stat-item"><span class="stat-number">120+</span><span class="stat-label">合作教练</span></div>
+                    <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">成功签约</span></div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="video-preview"><div class="play-btn"><i class="fas fa-play"></i></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能特色 -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">为什么选择我们？</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-video"></i></div><h3>专业展示</h3><p>高清视频展示，多角度呈现技术特点。</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-alt"></i></div><h3>人工审核</h3><p>每条视频经过专业教练审核，确保质量。</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-line"></i></div><h3>数据追踪</h3><p>可查看视频观看次数、停留时长等数据。</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-users"></i></div><h3>精准推荐</h3><p>根据位置、年龄匹配适合的教练和球探。</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 上传视频流程 -->
+    <section id="upload" class="upload-process">
+        <div class="container">
+            <h2 class="section-title">四步完成视频展示</h2>
+            <div class="process-steps">
+                <div class="step"><div class="step-number">1</div><h3>填写信息</h3><p>填写球员基本信息和技术特点</p></div>
+                <div class="step"><div class="step-number">2</div><h3>上传视频</h3><p>上传你的精彩集锦（2-3分钟最佳）</p></div>
+                <div class="step"><div class="step-number">3</div><h3>选择套餐</h3><p>选择适合的展示套餐并支付</p></div>
+                <div class="step"><div class="step-number">4</div><h3>审核上线</h3><p>24小时内审核通过，正式展示</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心：内嵌腾讯问卷表单 -->
+    <section class="upload-form">
+        <div class="container">
+            <div class="form-container">
+                <h2><i class="fas fa-file-upload"></i> 填写信息，上传你的足球视频</h2>
+                <p class="form-subtitle">请填写以下表格并提交，开启你的展示之旅</p>
+                <!-- 你专属的腾讯问卷内嵌于此 -->
+                <iframe src="https://wj.qq.com/s2/25711354/66c9/" 
+                        frameborder="0" 
+                        width="100%" 
+                        height="800" 
+                        style="border-radius: 10px; border: 1px solid #e1e4e8;"
+                        allowfullscreen>
+                </iframe>
+                <div class="form-note">
+                    <p><i class="fas fa-info-circle"></i> 提交表单后，请根据下方指引完成支付，我们将在24小时内审核您的视频。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 套餐价格 -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title">选择适合的套餐</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header"><h3>基础展示</h3><div class="price">¥28<span>/月</span></div></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 基础视频展示</li><li><i class="fas fa-check"></i> 30天展示期</li><li><i class="fas fa-check"></i> 基础数据统计</li><li><i class="fas fa-times"></i> 优先推荐</li><li><i class="fas fa-times"></i> 专业分析报告</li>
+                    </ul>
+                    <a href="#upload" class="btn-pricing">立即选择</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">最受欢迎</div>
+                    <div class="pricing-header"><h3>黄金推广</h3><div class="price">¥58<span>/月</span></div></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 高清视频展示</li><li><i class="fas fa-check"></i> 60天展示期</li><li><i class="fas fa-check"></i> 详细数据统计</li><li><i class="fas fa-check"></i> 优先推荐给教练</li><li><i class="fas fa-times"></i> 专业分析报告</li>
+                    </ul>
+                    <a href="#upload" class="btn-pricing">立即选择</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header"><h3>专业套餐</h3><div class="price">¥128<span>/月</span></div></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 超清视频展示</li><li><i class="fas fa-check"></i> 90天展示期</li><li><i class="fas fa-check"></i> 全面数据追踪</li><li><i class="fas fa-check"></i> 置顶优先推荐</li><li><i class="fas fa-check"></i> 专业能力分析报告</li>
+                    </ul>
+                    <a href="#upload" class="btn-pricing">立即选择</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 支付说明 -->
+    <section class="payment-info">
+        <div class="container">
+            <h2 class="section-title">支付与确认流程</h2>
+            <div class="payment-content">
+                <div class="payment-text">
+                    <h3>支付流程说明</h3>
+                    <ol>
+                        <li>填写并提交上方表单。</li>
+                        <li>添加客服微信 <strong class="wechat-id">xlTalentService</strong> 获取支付二维码。</li>
+                        <li>支付时备注 <strong>球员姓名+手机号</strong>。</li>
+                        <li>发送支付截图给客服确认。</li>
+                        <li>24小时内完成审核并上线展示。</li>
+                    </ol>
+                    <div class="contact-info">
+                        <p><i class="fas fa-weixin"></i> <strong>客服微信</strong>：xlTalentService</p>
+                        <p><i class="fas fa-clock"></i> <strong>客服时间</strong>：9:00 - 21:00</p>
+                    </div>
+                </div>
+                <div class="payment-qrcode">
+                    <div class="qrcode-container">
+                        <h4>扫码支付</h4>
+                        <div class="qrcode-images">
+                            <div class="qrcode-item">
+                                <p>微信支付</p>
+                                <!-- 请确保图片路径和名称正确 -->
+                                <img src="images/wechat-pay.jpg" alt="微信收款码" class="qrcode-img">
+                            </div>
+                            <div class="qrcode-item">
+                                <p>支付宝</p>
+                                <img src="images/alipay.jpg" alt="支付宝收款码" class="qrcode-img">
+                            </div>
+                        </div>
+                        <p class="qrcode-note">支付时务必备注 <strong>球员姓名+手机号</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 常见问题 -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <h2 class="section-title">常见问题</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question"><h3>视频有什么要求？</h3><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>建议时长2-3分钟，清晰度至少720p，展示传球、射门、盘带等多种技术动作，穿着统一队服。</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><h3>审核需要多长时间？</h3><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>我们承诺在24小时内完成审核。工作时间（9:00-18:00）提交的视频通常更快。</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question"><h3>如何知道我的视频被查看了？</h3><i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer"><p>我们每月会发送一次数据报告，包含观看次数、平均观看时长等信息。黄金套餐以上用户可随时向客服查询。</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="#home" class="logo"><i class="fas fa-futbol"></i><span>足球人生数字平台</span></a>
+                    <p class="footer-description">专注于青少年足球人才培养，连接未来之星与伯乐。</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a><a href="#"><i class="fab fa-weibo"></i></a><a href="#"><i class="fab fa-douyin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul><li><a href="#home">首页</a></li><li><a href="#upload">上传视频</a></li><li><a href="#pricing">套餐价格</a></li><li><a href="#faq">常见问题</a></li></ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-weixin"></i> 微信：xlTalentService</li>
+                        <li><i class="fas fa-envelope"></i> 邮箱：contact@footballtalent.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 足球人生数字平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
